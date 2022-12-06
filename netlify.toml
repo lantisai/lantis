@@ -3,4 +3,9 @@
 [build]
   base = "app/"
   publish = "build/web/"
-  command = "if cd flutter; then git pull && cd ..; else git clone https://github.com/flutter/flutter.git -b stable; fi && flutter/bin/flutter config --enable-web && flutter/bin/flutter build web --release"
+  command = "if cd flutter; then git pull && cd ..; else git clone https://github.com/flutter/flutter.git -b stable; fi && flutter/bin/flutter config --enable-web && flutter/bin/dart tool/env.dart && flutter/bin/flutter build web --release"
+
+# staging for now
+[context.production.environment]
+  SUPABASE_API_URL = "https://pnkoylosbvrygwcahish.supabase.co"
+  SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBua295bG9zYnZyeWd3Y2FoaXNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzAyODA3MDQsImV4cCI6MTk4NTg1NjcwNH0.vv2nUNo2439qVRFi0DrH9f1g0ngmPIf31DG-1g0ThsI"

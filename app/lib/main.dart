@@ -1,13 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:app/pages/account_page.dart';
 import 'package:app/pages/login_page.dart';
 import 'package:app/pages/splash_page.dart';
+import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '.env.dart';
 
 Future<void> main() async {
   await Supabase.initialize(
-    url: 'http://192.168.1.70:54321',
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0',
+    url: env['SUPABASE_API_URL']!,
+    anonKey: env['SUPABASE_ANON_KEY']!,
   );
   runApp(MyApp());
 }
