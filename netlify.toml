@@ -1,0 +1,6 @@
+# Settings in the [build] context are global and are applied to
+# all contexts unless otherwise overridden by more specific contexts.
+[build]
+  base = "app/"
+  publish = "build/web/"
+  command = "if cd flutter; then git pull && cd ..; else git clone https://github.com/flutter/flutter.git -b stable; fi && flutter/bin/flutter config --enable-web && flutter/bin/flutter build web --release"
