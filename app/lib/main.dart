@@ -42,6 +42,7 @@ class MyApp extends StatelessWidget {
           textTheme: tt,
 
           appBarTheme: AppBarTheme(
+            backgroundColor: cs.surface,
             systemOverlayStyle: SystemUiOverlayStyle(
               statusBarColor: cs.surface,
               systemNavigationBarColor: cs.surface,
