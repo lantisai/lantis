@@ -4,6 +4,7 @@ import 'package:app/pages/feed_page.dart';
 import 'package:app/pages/login_page.dart';
 import 'package:app/pages/splash_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show Supabase;
 
@@ -40,13 +41,13 @@ class MyApp extends StatelessWidget {
           // fontFamily: 'Inter',
           textTheme: tt,
 
-          // appBarTheme: AppBarTheme(
-          //   systemOverlayStyle: SystemUiOverlayStyle(
-          //     statusBarColor: cs.surface,
-          //     systemNavigationBarColor: cs.surface,
-          //   ),
-          //   elevation: 0.0,
-          // ),
+          appBarTheme: AppBarTheme(
+            systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: cs.surface,
+              systemNavigationBarColor: cs.surface,
+            ),
+            elevation: 0.0,
+          ),
           // bottomNavigationBarTheme: BottomNavigationBarThemeData(
           //   selectedItemColor: cs.primary,
           //   unselectedItemColor: cs.onSurface,
