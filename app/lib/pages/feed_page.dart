@@ -39,7 +39,10 @@ class Tweet extends StatelessWidget {
               CircleAvatar(
                 radius: 24,
                 backgroundColor: cs.primaryContainer,
-                child: Icon(data.type.icon, color: cs.primary),
+                child: Icon(
+                  data.type.icon,
+                  color: cs.onPrimaryContainer,
+                ),
               ),
               const SizedBox(width: 16),
               Expanded(
