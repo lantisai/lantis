@@ -1,8 +1,11 @@
-import 'package:app/pages/account_page.dart';
+import 'package:app/models/feed.dart';
+import 'package:app/models/session.dart';
+import 'package:app/pages/feed_page.dart';
 import 'package:app/pages/login_page.dart';
 import 'package:app/pages/splash_page.dart';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' show Supabase;
 
 import '.env.dart';
 
@@ -17,28 +20,58 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Supabase Flutter',
-      theme: ThemeData.dark().copyWith(
-        primaryColor: Colors.green,
-        textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.green,
-          ),
+    var cs = ColorScheme.fromSeed(
+      brightness: Brightness.light,
+      seedColor: const Color(0xff795548),
+    );
+    // var tt = Typography.englishLike2021;
+    // var tt = Typography.blackCupertino;
+    var tt = const TextTheme();
+    return MultiProvider(
+      providers: [
+        Provider(create: (context) => Session()),
+        // ChangeNotifierProvider(create: (context) => Heap(context.read<Supa>())),
+      ],
+      child: MaterialApp(
+        title: 'Lantis',
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: cs,
+          // fontFamily: 'Inter',
+          textTheme: tt,
+
+          // appBarTheme: AppBarTheme(
+          //   systemOverlayStyle: SystemUiOverlayStyle(
+          //     statusBarColor: cs.surface,
+          //     systemNavigationBarColor: cs.surface,
+          //   ),
+          //   elevation: 0.0,
+          // ),
+          // bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          //   selectedItemColor: cs.primary,
+          //   unselectedItemColor: cs.onSurface,
+          //   backgroundColor: cs.surface,
+          // ),
+          // textButtonTheme: TextButtonThemeData(
+          //   style: TextButton.styleFrom(
+          //     foregroundColor: Colors.green,
+          //   ),
+          // ),
+          // elevatedButtonTheme: ElevatedButtonThemeData(
+          //   style: ElevatedButton.styleFrom(
+          //     foregroundColor: Colors.white,
+          //     backgroundColor: Colors.green,
+          //     textStyle: tt.labelLarge,
+          //   ),
+          // ),
         ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.white,
-            backgroundColor: Colors.green,
-          ),
-        ),
+        initialRoute: '/',
+        routes: <String, WidgetBuilder>{
+          '/': (_) => const SplashPage(),
+          '/login': (_) => const LoginPage(),
+          '/feed': (_) => FeedPage(data: FeedData.random()),
+        },
       ),
-      initialRoute: '/',
-      routes: <String, WidgetBuilder>{
-        '/': (_) => const SplashPage(),
-        '/login': (_) => const LoginPage(),
-        '/account': (_) => const AccountPage(),
-      },
     );
   }
 }
