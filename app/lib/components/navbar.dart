@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class NavBar extends StatelessWidget {
@@ -138,7 +139,9 @@ class _ReplyInputModalState extends State<ReplyInputModal> {
               ],
             ),
           ),
-          SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
+          ...(kIsWeb
+              ? []
+              : [SizedBox(height: MediaQuery.of(context).viewInsets.bottom)]),
         ],
       ),
     );
