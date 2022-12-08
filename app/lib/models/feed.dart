@@ -10,7 +10,7 @@ class FeedData {
   TweetData tweetByIndex(int index) {
     if (index >= tweets.length) {
       tweets.addAll(
-          List.generate(index - tweets.length + 1, (_) => TweetData.random()));
+          List.generate(index - tweets.length + 1, (_) => TweetData.randomGpt()));
     }
     return tweets[index];
   }

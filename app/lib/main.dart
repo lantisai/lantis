@@ -1,5 +1,6 @@
 import 'package:app/models/feed.dart';
 import 'package:app/models/session.dart';
+import 'package:app/models/tweet.dart';
 import 'package:app/pages/feed_page.dart';
 import 'package:app/pages/login_page.dart';
 import 'package:app/pages/splash_page.dart';
@@ -15,6 +16,7 @@ Future<void> main() async {
     url: env['SUPABASE_API_URL']!,
     anonKey: env['SUPABASE_ANON_KEY']!,
   );
+  await initGptTweets();
   runApp(MyApp());
 }
 
