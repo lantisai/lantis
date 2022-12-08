@@ -2,6 +2,17 @@ import 'package:app/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:faker/faker.dart';
 
+List<String> topics = [
+  "AI and ML",
+  "Data science",
+  "Robotics",
+  "Computer science",
+  "Biotechnology",
+  "Environmental science",
+  "Quantum computing",
+  "Renewable energy",
+];
+
 class TweetData {
   final TweetType type;
   final String title;
@@ -16,11 +27,8 @@ class TweetData {
   });
 
   TweetData.random({bool withReplies = true})
-      : type = choice([
-          TweetType.project,
-          TweetType.clip,
-        ]),
-        title = faker.person.name(),
+      : type = choice(TweetType.values),
+        title = choice(topics),
         text = faker.lorem.sentences(3).join(" "),
         replies = withReplies ? randomReplies() : [];
 
@@ -29,8 +37,9 @@ class TweetData {
 }
 
 enum TweetType {
-  project(icon: Icons.abc),
-  clip(icon: Icons.face);
+  project(icon: Icons.account_balance),
+  goal(icon: Icons.directions_run),
+  clip(icon: Icons.extension);
 
   final IconData icon;
 
