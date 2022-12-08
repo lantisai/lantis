@@ -49,11 +49,6 @@ class MyApp extends StatelessWidget {
             ),
             elevation: 0.0,
           ),
-          // bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          //   selectedItemColor: cs.primary,
-          //   unselectedItemColor: cs.onSurface,
-          //   backgroundColor: cs.surface,
-          // ),
           // textButtonTheme: TextButtonThemeData(
           //   style: TextButton.styleFrom(
           //     foregroundColor: Colors.green,

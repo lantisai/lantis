@@ -1,22 +1,17 @@
 import 'package:app/models/tweet.dart';
 
 class FeedData {
-  final Iterable<TweetData> tweets;
-  Iterator<TweetData>? iter;
+  final List<TweetData> tweets;
 
   FeedData(this.tweets);
 
-  FeedData.random() : tweets = randomTweets();
+  FeedData.random() : tweets = [];
 
   TweetData tweetByIndex(int index) {
-    iter ??= tweets.iterator;
-    iter!.moveNext();
-    return iter!.current;
-  }
-}
-
-Iterable<TweetData> randomTweets() sync* {
-  while (true) {
-    yield TweetData.random();
+    if (index >= tweets.length) {
+      tweets.addAll(
+          List.generate(index - tweets.length + 1, (_) => TweetData.random()));
+    }
+    return tweets[index];
   }
 }

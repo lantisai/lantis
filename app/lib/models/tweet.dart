@@ -15,14 +15,17 @@ class TweetData {
     required this.replies,
   });
 
-  TweetData.random()
+  TweetData.random({bool withReplies = true})
       : type = choice([
           TweetType.project,
           TweetType.clip,
         ]),
         title = faker.person.name(),
         text = faker.lorem.sentences(3).join(" "),
-        replies = [];
+        replies = withReplies ? randomReplies() : [];
+
+  static randomReplies() => List.generate(
+      randomInt(0, 7), (_) => TweetData.random(withReplies: false));
 }
 
 enum TweetType {
