@@ -1,6 +1,5 @@
 import { serve } from "https://deno.land/std@0.131.0/http/server.ts"
-
-console.log("Hello from Functions!")
+import { corsHeaders } from '../_shared/cors.ts'
 
 async function ask(prompt: string): Promise<[string]> {
   const gpt3Endpoint = 'https://api.openai.com/v1/completions';
@@ -37,6 +36,11 @@ async function ask(prompt: string): Promise<[string]> {
 }
 
 serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders })
+  }
+
+
   // This is the input text for the request
   const topics = [
     "AI and ML",
@@ -117,8 +121,9 @@ serve(async (req) => {
   const tweets = out.map(({topic, texts}) => texts.map(text => ({title: topic, text})))
     .flat(1);
 
+
   return new Response(
     JSON.stringify(tweets),
-    { headers: { "Content-Type": "application/json" } },
+    { headers: { "Content-Type": "application/json", ...corsHeaders } },
   )
 })
