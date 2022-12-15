@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14.1
--- Dumped by pg_dump version 14.5 (Debian 14.5-2.pgdg110+2)
+-- Dumped from database version 15.1
+-- Dumped by pg_dump version 15.1 (Debian 15.1-1.pgdg110+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -59,39 +59,10 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "extensions";
 
 
 --
--- Name: install_available_extensions_and_test(); Type: FUNCTION; Schema: public; Owner: postgres
+-- Name: SCHEMA "public"; Type: ACL; Schema: -; Owner: pg_database_owner
 --
 
-CREATE FUNCTION "public"."install_available_extensions_and_test"() RETURNS boolean
-    LANGUAGE "plpgsql"
-    AS $$
-DECLARE extension_name TEXT;
-allowed_extentions TEXT[] := string_to_array(current_setting('supautils.privileged_extensions'), ',');
-BEGIN 
-  FOREACH extension_name IN ARRAY allowed_extentions 
-  LOOP
-    SELECT trim(extension_name) INTO extension_name;
-    /* skip below extensions check for now */
-    CONTINUE WHEN extension_name = 'pgroonga' OR  extension_name = 'pgroonga_database' OR extension_name = 'pgsodium';
-    CONTINUE WHEN extension_name = 'plpgsql' OR  extension_name = 'plpgsql_check' OR extension_name = 'pgtap';
-    CONTINUE WHEN extension_name = 'supabase_vault' OR extension_name = 'wrappers';
-    RAISE notice 'START TEST FOR: %', extension_name;
-    EXECUTE format('DROP EXTENSION IF EXISTS %s CASCADE', quote_ident(extension_name));
-    EXECUTE format('CREATE EXTENSION %s CASCADE', quote_ident(extension_name));
-    RAISE notice 'END TEST FOR: %', extension_name;
-  END LOOP;
-    RAISE notice 'EXTENSION TESTS COMPLETED..';
-    return true;
-END;
-$$;
-
-
-ALTER FUNCTION "public"."install_available_extensions_and_test"() OWNER TO "postgres";
-
---
--- Name: SCHEMA "public"; Type: ACL; Schema: -; Owner: postgres
---
-
+GRANT USAGE ON SCHEMA "public" TO "postgres";
 GRANT USAGE ON SCHEMA "public" TO "anon";
 GRANT USAGE ON SCHEMA "public" TO "authenticated";
 GRANT USAGE ON SCHEMA "public" TO "service_role";
@@ -217,10 +188,10 @@ GRANT ALL ON FUNCTION "extensions"."hmac"("text", "text", "text") TO "dashboard_
 
 
 --
--- Name: FUNCTION "pg_stat_statements"("showtext" boolean, OUT "userid" "oid", OUT "dbid" "oid", OUT "toplevel" boolean, OUT "queryid" bigint, OUT "query" "text", OUT "plans" bigint, OUT "total_plan_time" double precision, OUT "min_plan_time" double precision, OUT "max_plan_time" double precision, OUT "mean_plan_time" double precision, OUT "stddev_plan_time" double precision, OUT "calls" bigint, OUT "total_exec_time" double precision, OUT "min_exec_time" double precision, OUT "max_exec_time" double precision, OUT "mean_exec_time" double precision, OUT "stddev_exec_time" double precision, OUT "rows" bigint, OUT "shared_blks_hit" bigint, OUT "shared_blks_read" bigint, OUT "shared_blks_dirtied" bigint, OUT "shared_blks_written" bigint, OUT "local_blks_hit" bigint, OUT "local_blks_read" bigint, OUT "local_blks_dirtied" bigint, OUT "local_blks_written" bigint, OUT "temp_blks_read" bigint, OUT "temp_blks_written" bigint, OUT "blk_read_time" double precision, OUT "blk_write_time" double precision, OUT "wal_records" bigint, OUT "wal_fpi" bigint, OUT "wal_bytes" numeric); Type: ACL; Schema: extensions; Owner: postgres
+-- Name: FUNCTION "pg_stat_statements"("showtext" boolean, OUT "userid" "oid", OUT "dbid" "oid", OUT "toplevel" boolean, OUT "queryid" bigint, OUT "query" "text", OUT "plans" bigint, OUT "total_plan_time" double precision, OUT "min_plan_time" double precision, OUT "max_plan_time" double precision, OUT "mean_plan_time" double precision, OUT "stddev_plan_time" double precision, OUT "calls" bigint, OUT "total_exec_time" double precision, OUT "min_exec_time" double precision, OUT "max_exec_time" double precision, OUT "mean_exec_time" double precision, OUT "stddev_exec_time" double precision, OUT "rows" bigint, OUT "shared_blks_hit" bigint, OUT "shared_blks_read" bigint, OUT "shared_blks_dirtied" bigint, OUT "shared_blks_written" bigint, OUT "local_blks_hit" bigint, OUT "local_blks_read" bigint, OUT "local_blks_dirtied" bigint, OUT "local_blks_written" bigint, OUT "temp_blks_read" bigint, OUT "temp_blks_written" bigint, OUT "blk_read_time" double precision, OUT "blk_write_time" double precision, OUT "temp_blk_read_time" double precision, OUT "temp_blk_write_time" double precision, OUT "wal_records" bigint, OUT "wal_fpi" bigint, OUT "wal_bytes" numeric, OUT "jit_functions" bigint, OUT "jit_generation_time" double precision, OUT "jit_inlining_count" bigint, OUT "jit_inlining_time" double precision, OUT "jit_optimization_count" bigint, OUT "jit_optimization_time" double precision, OUT "jit_emission_count" bigint, OUT "jit_emission_time" double precision); Type: ACL; Schema: extensions; Owner: postgres
 --
 
-GRANT ALL ON FUNCTION "extensions"."pg_stat_statements"("showtext" boolean, OUT "userid" "oid", OUT "dbid" "oid", OUT "toplevel" boolean, OUT "queryid" bigint, OUT "query" "text", OUT "plans" bigint, OUT "total_plan_time" double precision, OUT "min_plan_time" double precision, OUT "max_plan_time" double precision, OUT "mean_plan_time" double precision, OUT "stddev_plan_time" double precision, OUT "calls" bigint, OUT "total_exec_time" double precision, OUT "min_exec_time" double precision, OUT "max_exec_time" double precision, OUT "mean_exec_time" double precision, OUT "stddev_exec_time" double precision, OUT "rows" bigint, OUT "shared_blks_hit" bigint, OUT "shared_blks_read" bigint, OUT "shared_blks_dirtied" bigint, OUT "shared_blks_written" bigint, OUT "local_blks_hit" bigint, OUT "local_blks_read" bigint, OUT "local_blks_dirtied" bigint, OUT "local_blks_written" bigint, OUT "temp_blks_read" bigint, OUT "temp_blks_written" bigint, OUT "blk_read_time" double precision, OUT "blk_write_time" double precision, OUT "wal_records" bigint, OUT "wal_fpi" bigint, OUT "wal_bytes" numeric) TO "dashboard_user";
+GRANT ALL ON FUNCTION "extensions"."pg_stat_statements"("showtext" boolean, OUT "userid" "oid", OUT "dbid" "oid", OUT "toplevel" boolean, OUT "queryid" bigint, OUT "query" "text", OUT "plans" bigint, OUT "total_plan_time" double precision, OUT "min_plan_time" double precision, OUT "max_plan_time" double precision, OUT "mean_plan_time" double precision, OUT "stddev_plan_time" double precision, OUT "calls" bigint, OUT "total_exec_time" double precision, OUT "min_exec_time" double precision, OUT "max_exec_time" double precision, OUT "mean_exec_time" double precision, OUT "stddev_exec_time" double precision, OUT "rows" bigint, OUT "shared_blks_hit" bigint, OUT "shared_blks_read" bigint, OUT "shared_blks_dirtied" bigint, OUT "shared_blks_written" bigint, OUT "local_blks_hit" bigint, OUT "local_blks_read" bigint, OUT "local_blks_dirtied" bigint, OUT "local_blks_written" bigint, OUT "temp_blks_read" bigint, OUT "temp_blks_written" bigint, OUT "blk_read_time" double precision, OUT "blk_write_time" double precision, OUT "temp_blk_read_time" double precision, OUT "temp_blk_write_time" double precision, OUT "wal_records" bigint, OUT "wal_fpi" bigint, OUT "wal_bytes" numeric, OUT "jit_functions" bigint, OUT "jit_generation_time" double precision, OUT "jit_inlining_count" bigint, OUT "jit_inlining_time" double precision, OUT "jit_optimization_count" bigint, OUT "jit_optimization_time" double precision, OUT "jit_emission_count" bigint, OUT "jit_emission_time" double precision) TO "dashboard_user";
 
 
 --
@@ -523,16 +494,6 @@ GRANT ALL ON FUNCTION "extensions"."verify"("token" "text", "secret" "text", "al
 
 
 --
--- Name: FUNCTION "sequential_executor"("prepared_statement_names" "text"[]); Type: ACL; Schema: graphql; Owner: supabase_admin
---
-
--- GRANT ALL ON FUNCTION "graphql"."sequential_executor"("prepared_statement_names" "text"[]) TO "postgres";
--- GRANT ALL ON FUNCTION "graphql"."sequential_executor"("prepared_statement_names" "text"[]) TO "anon";
--- GRANT ALL ON FUNCTION "graphql"."sequential_executor"("prepared_statement_names" "text"[]) TO "authenticated";
--- GRANT ALL ON FUNCTION "graphql"."sequential_executor"("prepared_statement_names" "text"[]) TO "service_role";
-
-
---
 -- Name: FUNCTION "graphql"("operationName" "text", "query" "text", "variables" "jsonb", "extensions" "jsonb"); Type: ACL; Schema: graphql_public; Owner: supabase_admin
 --
 
@@ -547,15 +508,6 @@ GRANT ALL ON FUNCTION "extensions"."verify"("token" "text", "secret" "text", "al
 --
 
 GRANT ALL ON SEQUENCE "pgsodium"."key_key_id_seq" TO "pgsodium_keyiduser";
-
-
---
--- Name: FUNCTION "install_available_extensions_and_test"(); Type: ACL; Schema: public; Owner: postgres
---
-
-GRANT ALL ON FUNCTION "public"."install_available_extensions_and_test"() TO "anon";
-GRANT ALL ON FUNCTION "public"."install_available_extensions_and_test"() TO "authenticated";
-GRANT ALL ON FUNCTION "public"."install_available_extensions_and_test"() TO "service_role";
 
 
 --
