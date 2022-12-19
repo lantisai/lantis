@@ -9,13 +9,9 @@ void main() async {
     url: env['SUPABASE_API_URL']!,
     anonKey: env['SUPABASE_ANON_KEY']!,
   );
-  test('EF `/tweets` returns something', () async {
-    final resp = await supabase.functions.invoke("tweets");
-    print(resp.data);
-  });
-
-  test('getGptTweets() returns something', () async {
-    final tweets = await fetchFeedTweets();
-    print(tweets);
+  test('conn', () async {
+    final resp =
+        await supabase.from('tweets_full').select('*').is_('parent_id', null);
+    print(resp);
   });
 }

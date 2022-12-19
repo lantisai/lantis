@@ -16,7 +16,6 @@ Future<void> main() async {
     url: env['SUPABASE_API_URL']!,
     anonKey: env['SUPABASE_ANON_KEY']!,
   );
-  await initGptTweets();
   runApp(MyApp());
 }
 
@@ -27,9 +26,38 @@ class MyApp extends StatelessWidget {
       brightness: Brightness.light,
       seedColor: const Color(0xff795548),
     );
-    // var tt = Typography.englishLike2021;
-    // var tt = Typography.blackCupertino;
-    var tt = const TextTheme();
+    var tt = Typography.englishLike2021.copyWith(
+      displayLarge: Typography.englishLike2021.displayLarge
+          ?.copyWith(color: Colors.black54),
+      displayMedium: Typography.englishLike2021.displayMedium
+          ?.copyWith(color: Colors.black54),
+      displaySmall: Typography.englishLike2021.displaySmall
+          ?.copyWith(color: Colors.black54),
+      headlineLarge: Typography.englishLike2021.headlineLarge
+          ?.copyWith(color: Colors.black54),
+      headlineMedium: Typography.englishLike2021.headlineMedium
+          ?.copyWith(color: Colors.black54),
+      headlineSmall: Typography.englishLike2021.headlineSmall
+          ?.copyWith(color: Colors.black87, fontSize: 22.0),
+      titleLarge: Typography.englishLike2021.titleLarge
+          ?.copyWith(color: Colors.black87, fontSize: 19.0),
+      titleMedium: Typography.englishLike2021.titleMedium
+          ?.copyWith(color: Colors.black87),
+      titleSmall:
+          Typography.englishLike2021.titleSmall?.copyWith(color: Colors.black),
+      bodyLarge:
+          Typography.englishLike2021.bodyLarge?.copyWith(color: Colors.black87),
+      bodyMedium: Typography.englishLike2021.bodyMedium
+          ?.copyWith(color: Colors.black87, fontSize: 16.0),
+      bodySmall:
+          Typography.englishLike2021.bodySmall?.copyWith(color: Colors.black54),
+      labelLarge: Typography.englishLike2021.labelLarge
+          ?.copyWith(color: Colors.black87),
+      labelMedium:
+          Typography.englishLike2021.labelMedium?.copyWith(color: Colors.black),
+      labelSmall:
+          Typography.englishLike2021.labelSmall?.copyWith(color: Colors.black),
+    );
     return MultiProvider(
       providers: [
         Provider(create: (context) => Session()),
@@ -68,7 +96,7 @@ class MyApp extends StatelessWidget {
         routes: <String, WidgetBuilder>{
           '/': (_) => const SplashPage(),
           '/login': (_) => const LoginPage(),
-          '/feed': (_) => FeedPage(data: FeedData.random()),
+          '/feed': (_) => FeedPage(),
         },
       ),
     );

@@ -3,10 +3,29 @@ import 'package:app/components/tweet.dart';
 import 'package:app/models/tweet.dart';
 import 'package:flutter/material.dart';
 
-class TweetPage extends StatelessWidget {
+class TweetPage extends StatefulWidget {
   final TweetData data;
 
   const TweetPage({super.key, required this.data});
+
+  @override
+  State<TweetPage> createState() => _TweetPageState();
+}
+
+class _TweetPageState extends State<TweetPage> {
+  late TweetData data;
+
+  @override
+  void initState() {
+    super.initState();
+    data = widget.data;
+    initStateAsync();
+  }
+
+  void initStateAsync() async {
+    await data.fetchReplies();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {

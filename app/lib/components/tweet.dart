@@ -1,6 +1,7 @@
 import 'package:app/models/tweet.dart';
 import 'package:app/pages/tweet_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class Avatar extends StatelessWidget {
   final IconData icon;
@@ -32,10 +33,6 @@ class Tweet extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
     return GestureDetector(
       onTap: () {
-        for (var reply in data.replies) {
-          reply.replies
-              .replaceRange(0, reply.replies.length, TweetData.randomReplies());
-        }
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => TweetPage(data: data),
@@ -49,15 +46,15 @@ class Tweet extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Avatar(icon: data.type.icon, radius: 24),
+                Avatar(icon: Icons.adb, radius: 24),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(data.title, style: tt.subtitle2),
+                      Text(data.author, style: tt.subtitle2),
                       const SizedBox(height: 4),
-                      Text(data.text, style: tt.bodyText1),
+                      MarkdownBody(data: data.head),
                       const SizedBox(height: 8),
                       Row(children: [
                         const Icon(
@@ -65,7 +62,7 @@ class Tweet extends StatelessWidget {
                           size: 20,
                         ),
                         const SizedBox(width: 8),
-                        Text(data.replies.length.toString()),
+                        Text(data.repliesNum.toString()),
                       ]),
                     ],
                   ),
@@ -94,16 +91,17 @@ class TweetMax extends StatelessWidget {
         Padding(
           padding: EdgeInsets.all(16),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Row(
                 children: [
-                  Avatar(icon: data.type.icon, radius: 24),
+                  Avatar(icon: Icons.adb, radius: 24),
                   SizedBox(width: 16),
-                  Text(data.title, style: tt.subtitle2),
+                  Text(data.author, style: tt.subtitle2),
                 ],
               ),
               SizedBox(height: 16),
-              Text(data.text, style: tt.bodyText1?.copyWith(fontSize: 22)),
+              MarkdownBody(data: data.content),
               const SizedBox(height: 16),
             ],
           ),

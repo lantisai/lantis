@@ -14,63 +14,63 @@ List<String> topics = [
   "Renewable energy",
 ];
 
-late List<TweetData> gptTweets;
-
-Future<List<TweetData>> getGptTweets() async {
-  final List<dynamic> rawTweets =
-      (await supabase.functions.invoke("tweets")).data;
-  return rawTweets
-      .map((tweet) => TweetData(
-            type: choice(TweetType.values),
-            title: tweet['title'],
-            text: tweet['text'],
-            replies: TweetData.randomReplies(),
-          ))
-      .toList();
-}
-
-initGptTweets() async {
-  gptTweets = await getGptTweets();
-}
-
 class TweetData {
+  final int id;
   final TweetType type;
-  final String title;
-  final String text;
-  final List<TweetData> replies;
+  final String head;
+  final String content;
+  final String author;
+  final String? avatarUrl;
+  final int repliesNum;
+  List<TweetData> replies = [];
 
-  const TweetData({
+  TweetData({
+    required this.id,
     required this.type,
-    required this.title,
-    required this.text,
-    required this.replies,
+    required this.head,
+    required this.content,
+    required this.author,
+    required this.avatarUrl,
+    required this.repliesNum,
   });
 
-  static TweetData randomGpt({bool withReplies = true}) {
-    return choice(gptTweets);
+  factory TweetData.fromJson(Map<String, dynamic> json) {
+    return TweetData(
+      id: json['id'],
+      type: TweetType.values.firstWhere(
+          (e) => e.toString() == 'TweetType.${json["type"]}',
+          orElse: () => TweetType.custom),
+      head: json['head'],
+      content: json['content'],
+      author: json['full_name'],
+      avatarUrl: json['avatar_url'],
+      repliesNum: json['replies_num'],
+    );
   }
-
-  TweetData.random({bool withReplies = true})
-      : type = choice(TweetType.values),
-        title = choice(topics),
-        text = faker.lorem.sentences(3).join(" "),
-        replies = withReplies ? randomReplies() : [];
-
-  static randomReplies() => List.generate(
-      randomInt(0, 7), (_) => TweetData.random(withReplies: false));
 
   @override
   String toString() {
-    return 'TweetData(title=$title, text=$text)';
+    return 'TweetData(id=$id,author=$author,head=$head)';
+  }
+
+  Future fetchReplies() async {
+    final raw = await supabase
+        .from('tweets_full')
+        .select('*')
+        .eq('parent_id', id)
+        .order('id', ascending: true);
+    replies = raw
+        .map((tweet) => TweetData.fromJson(tweet))
+        .toList()
+        .cast<TweetData>();
   }
 }
 
 enum TweetType {
-  project(icon: Icons.account_balance),
-  goal(icon: Icons.directions_run),
-  clip(icon: Icons.extension);
+  custom(),
+  project(),
+  milestone(),
+  step();
 
-  final IconData icon;
-
-  const TweetType({required this.icon});
+  const TweetType();
 }
