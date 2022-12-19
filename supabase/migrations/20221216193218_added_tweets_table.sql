@@ -45,4 +45,4 @@ from (select tweets.*, count(replies) replies_num
 left join profiles on tweets.profile_id = profiles.id
 left join fprofiles on tweets.fprofile_id = fprofiles.id;
 
-alter view tweets_full owner to authenticated;
+-- alter view tweets_full owner to authenticated;
