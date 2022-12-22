@@ -1,3 +1,4 @@
 .env
 /local/
 /node_modules/
+/.sqls/config.json
